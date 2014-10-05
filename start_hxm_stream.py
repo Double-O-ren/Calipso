@@ -41,7 +41,6 @@ def callback(value_name, value):
         curtime = time.time()
         data = {"heart": value, "time":curtime}
         rri_buffer.append(data)
-        print "RR {0:1.4f} at {1}".format(value, curtime)
         if len(rri_buffer) > winlen:
             rri = [x['heart'] for x in rri_buffer]
             hrv = biosigcorr.getSDNN(rri, winlen, offset=1)[0]
