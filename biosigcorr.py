@@ -2,7 +2,7 @@
 
 import numpy as np
 #import os
-from scipy.signal import medfilt #eventually use this?
+#from scipy.signal import medfilt #eventually use this?
 
 import matplotlib.pyplot as plt
 
@@ -18,10 +18,11 @@ def createWindowMatrix(data, winlen=15, offset=4):
 def getHR(rri, winlen=15, offset=4):
     """
     calculate smoothed heart rate as the median value over a window with length winlen
+    expects RRIs in seconds
     """
     rria = np.array(rri)
     W = createWindowMatrix(rria, winlen, offset)
-    instantHR = 60000 / rria[W]
+    instantHR = 60 / rria[W]
     smoothHR = np.median(instantHR, axis=1)
     return smoothHR
 
@@ -40,6 +41,9 @@ def getSDNN(rri, winlen=15, offset=4):
     return sdnn
     
 def getRMSSD(rri, winlen=15, offset=4):
+    """
+    another variation on HRV
+    """
     rria = np.array(rri)
     W = createWindowMatrix(rria, winlen, offset)
     M = rria[W]
