@@ -225,6 +225,7 @@ function updateState(){
     score += SCORE_SCALE * (player2_val - player1_val) / (2.0 * WINDOW_SCALE);
     if (count > MAX_COUNT) {
         score*=1.1;
+    }
     
     //console.log(score);
     updateVisualScore();
