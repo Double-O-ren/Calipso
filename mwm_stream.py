@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import sys
 
 from scipy import signal
+from math import log
 
 from mindwavemobile.MindwaveDataPoints import *
 from mindwavemobile.MindwaveDataPointReader import MindwaveDataPointReader
@@ -20,7 +21,7 @@ from collections import deque
 import requests
 import simplejson as json
     
-HOST_NAME = '172.31.35.47'
+HOST_NAME = '172.31.32.38'
 plotdata=False
 
 
@@ -36,13 +37,8 @@ if __name__ == "__main__":
         target_address = 'COM4'
 
     elif sys.platform == 'darwin':
-        target_address = "MindWave Mobile-devA"
-        
-    
-    
-        
-    
-    
+        target_address = "/dev/tty.MindWaveMobile-DevA"
+
     print "Connecting to MWM...",
     try:
         mindwaveDataPointReader = MindwaveDataPointReader(target_address)
@@ -102,14 +98,17 @@ if __name__ == "__main__":
 #                
             
             elif (dataPoint.__class__ is EEGPowersDataPoint):
-                #scaledval = dataPoint.highAlpha/float(dataPoint.maxint)
-                #scaledval = log(dataPoint.highAlpha)/log(float(dataPoint.maxint))
-                scaledval = log(dataPoint.highAlpha)/log(float(2**20)+1e-8)
-                data = {'EEGPowers': scaledval }
+                scaledHighAlpha = 1000 * dataPoint.highAlpha/float(dataPoint.maxint)
+                scaledLowAlpha = 1000 * dataPoint.lowAlpha/float(dataPoint.maxint)
+                #scaledval = 1 * dataPoint.highAlpha/float(dataPoint.maxint)
+                #scaledval = np.log(dataPoint.highAlpha)/np.log(float(dataPoint.maxint))
+                #scaledval = log(dataPoint.highAlpha)/log(float(2**20)+1e-8)
+                data = {'brain': scaledHighAlpha}#, scaledLowAlpha }
+
                 
-                out = {'EEGPowers':scaledval, 'timestamp': time.time()}
+                out = {'brain':scaledval, 'timestamp': time.time()}
                 
-               
+                
                 #values = [float(x)/dataPoint.maxint for x in dataPoint.asList()]
                 #data['value'] = values
                 jsn = json.dumps(data)
@@ -120,7 +119,7 @@ if __name__ == "__main__":
                     prevtime=0
                 else:
                     prevtime=bwdata[-2]['timestamp']
-                print "alphaH {0:1.4f} at {1}".format(bwdata[-1]['EEGPowers'], bwdata[-1]['timestamp'])
+                print "alphaH {0} --> {1:1.4f} at {2}".format(dataPoint.highAlpha, out['brain'], out['timestamp'])
         
     #        if len(rawdatastream) > Fs:
     #            plt.plot(rawdatastream)
