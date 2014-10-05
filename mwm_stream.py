@@ -24,20 +24,38 @@ import simplejson as json
 HOST_NAME = '172.31.32.38'
 plotdata=False
 
+playername = 'player1_val'
 
 #def main():
 if __name__ == "__main__":
     
+    if len(sys.argv)==1:
+        argin = str(sys.argv[1]).lower()
+        if "player" not in argin:
+            playername = 'player' + argin
+        else:
+            playername = argin
+        if '_val' not in playername:
+            playername += '_val'
+    print "running " + playername
+        
     
     if sys.platform == 'win32':
         #target_COM = 'COM4' #use this to identify correct address?
         #target_name = "MindWave Mobile"
         #target_address = '74:e5:43:B1:96:18' #mjp work MWM
         #target_address = '74:e5:43:be:3f:9e' #mjp home MWM
-        target_address = 'COM4'
+        if playername is 'player1_val':
+            target_address = 'COM4'
+        elif playername is 'player2_val':
+            target_address = 'COM5'
 
     elif sys.platform == 'darwin':
-        target_address = "/dev/tty.MindWaveMobile-DevA"
+        if playername is 'player1_val':
+            target_address = '/dev/tty.MindWaveMobile-DevA'
+        elif playername is 'player2_val':
+            target_address = '/dev/tty.MindWaveMobile-DevA'
+        #target_address = "/dev/tty.MindWaveMobile-DevA"
 
     print "Connecting to MWM...",
     try:
@@ -100,13 +118,14 @@ if __name__ == "__main__":
             elif (dataPoint.__class__ is EEGPowersDataPoint):
                 scaledHighAlpha = 1000 * dataPoint.highAlpha/float(dataPoint.maxint)
                 scaledLowAlpha = 1000 * dataPoint.lowAlpha/float(dataPoint.maxint)
+                scaledBeta = 1000 * ((dataPoint.lowBeta + dataPoint.lowBeta)/2.)/float(dataPoint.maxint)
                 #scaledval = 1 * dataPoint.highAlpha/float(dataPoint.maxint)
                 #scaledval = np.log(dataPoint.highAlpha)/np.log(float(dataPoint.maxint))
                 #scaledval = log(dataPoint.highAlpha)/log(float(2**20)+1e-8)
-                data = {'brain': scaledHighAlpha}#, scaledLowAlpha }
-
+                data = {playername: scaledHighAlpha}#, scaledLowAlpha }
+                #data = {'brain': scaledBeta}
                 
-                out = {'brain':scaledval, 'timestamp': time.time()}
+                out = {'brain':scaledBeta, 'timestamp': time.time()}
                 
                 
                 #values = [float(x)/dataPoint.maxint for x in dataPoint.asList()]
