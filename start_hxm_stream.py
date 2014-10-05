@@ -4,6 +4,10 @@ import platform
 import time
 import zephyr
 from zephyr.testing import simulation_workflow
+import requests
+import simplejson as json
+
+HOST_NAME = '172.31.35.47'
 
 # HRM data appears here.
 def callback(value_name, value):
@@ -18,6 +22,10 @@ def callback(value_name, value):
     if value_name == "heartbeat_interval":
         # print RR interval and timestamp
         print "RR {0:1.4f} at {1}".format(value, time.time())
+        data = {"oren": value}
+        jsn = json.dumps(data)
+        st = 'http://%s:8000/update_data?update=%s' % (HOST_NAME, jsn)
+        requests.post(st)
 
 
 def main():
