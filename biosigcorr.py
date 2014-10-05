@@ -44,7 +44,7 @@ def getRMSSD(rri, winlen=15, offset=4):
     W = createWindowMatrix(rria, winlen, offset)
     M = rria[W]
     
-    return np.sum(np.diff(M, axis=1)**2, axis=1) * 1/(len(rri)-1)
+    return np.sqrt(np.sum(np.diff(M, axis=1)**2, axis=1) * 1/(len(rri)-1), axis=1 )
 
 
 
