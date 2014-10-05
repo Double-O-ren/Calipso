@@ -9,7 +9,7 @@ try:
         val1 = random.random()
 
         print str(val1)
-        data = {"gsr": val1}
+        data = {"player1_val": val1}
         jsn = json.dumps(data)
         st = 'http://%s:8000/update_data?update=%s' % (HOST_NAME, jsn)
         requests.post(st)

@@ -17,6 +17,12 @@ def index():
 def mind_sumo():
     return render_template('mind_sumo.html'), 200
 
+
+@app.route("/font")
+def font():
+    return render_template('font.html'), 200
+
+
 @app.route("/data", methods=['GET'])
 def data():
     global has_new_data
