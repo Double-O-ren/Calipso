@@ -14,7 +14,10 @@ import biosigcorr
 HOST_NAME = '172.31.32.38'
 #HOST_NAME = '172.31.35.47'
 
-heartLog = open("heartLog.txt", "w")
+plotMultHRV = 10
+
+heartLog = open("heartLog.txt", "a")
+
 
 rri_buffer = deque()
 winlen = 30 #number of RR intervals to calculate HRV over
@@ -31,21 +34,21 @@ def callback(value_name, value):
     #print value_name, value
     if value_name == "heartbeat_interval":
         # print RR interval and timestamp
-        data = {"heart": value}
+        curtime = time.time()
+        data = {"heart": value, "time":curtime}
         jsn = json.dumps(data)
         st = 'http://%s:8000/update_data?update=%s' % (HOST_NAME, jsn)
         requests.post(st)
         print "RR {0:1.4f} at {1}".format(value, time.time())
-        heartLog.write("{0:1.4f} at {1}".format(value, time.time()))
-
-        curtime = time.time()
-        data = {"heart": value, "time":curtime}
+        heartLog.write("{0:1.4f} at {1}\n".format(value, time.time()))
+        heartLog.flush()
+        
         rri_buffer.append(data)
         if len(rri_buffer) > winlen:
             rri = [x['heart'] for x in rri_buffer]
             hrv = biosigcorr.getSDNN(rri, winlen, offset=1)[0]
             print "HRV {0:.2f} from {1} RRIs".format(hrv, len(rri_buffer))
-            data = {"heart": hrv, "time":curtime}
+            data = {"hrv": hrv*plotMultHRV, "time":curtime}
             jsn = json.dumps(data)
             st = 'http://%s:8000/update_data?update=%s' % (HOST_NAME, jsn)
             requests.post(st)

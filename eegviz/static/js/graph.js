@@ -16,7 +16,7 @@ graphs = {
     },
     graph2: {
     groups: {
-        brain: {
+        hrv: {
         value: 0,
         color: 'red',
         data: d3.range(limit).map(function() {
@@ -25,6 +25,17 @@ graphs = {
         }
     }
     },
+    graph3: {
+    groups: {
+        brain: {
+        value: 0,
+        color: 'green',
+        data: d3.range(limit).map(function() {
+            return 0
+        })
+        }
+    }
+    }
 }
 
 function initGraphs(){
