@@ -40,7 +40,7 @@ def callback(value_name, value):
         st = 'http://%s:8000/update_data?update=%s' % (HOST_NAME, jsn)
         requests.post(st)
         print "RR {0:1.4f} at {1}".format(value, time.time())
-        heartLog.write("{0:1.4f} at {1}\n".format(value, time.time()))
+        heartLog.write("{0:1.4f},{1}\n".format(value, time.time()))
         heartLog.flush()
         
         rri_buffer.append(data)

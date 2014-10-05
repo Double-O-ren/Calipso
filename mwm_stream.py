@@ -127,13 +127,21 @@ if __name__ == "__main__":
                 scaledval = 1000 * dataPoint.highAlpha/float(dataPoint.maxint)
                 scaledval = 1000 * dataPoint.lowAlpha/float(dataPoint.maxint)
                 scaledval = 1000 * dataPoint.lowAlpha/float(dataPoint.maxint)
-                #scaledBeta = 1000 * ((dataPoint.lowBeta + dataPoint.lowBeta)/2.)/float(dataPoint.maxint)
+                
+                scaledval = np.log((dataPoint.lowBeta + dataPoint.highBeta)/2.) / np.log(float(dataPoint.maxint))
+                #scaledBeta = 1000 * ((dataPoint.lowBeta + dataPoint.highBeta)/2.)/float(dataPoint.maxint)
                 #scaledval = ((dataPoint.lowBeta + dataPoint.lowBeta)/2.)/float(dataPoint.maxint)
                 #scaledval = 1 * dataPoint.highAlpha/float(dataPoint.maxint)
                 
-                scaledval = np.log(dataPoint.highAlpha)/np.log(float(dataPoint.maxint))
+                #scaledval = np.log(dataPoint.highAlpha)/np.log(float(dataPoint.maxint))
+                #scaledval = np.log(dataPoint.lowAlpha)/np.log(float(dataPoint.maxint))
+                #scaledval = np.log(dataPoint.lowGamma)/np.log(float(dataPoint.maxint)
+                #scaledval = np.log(dataPoint.midGamma)/np.log(float(dataPoint.maxint))
+                #scaledval = np.log(dataPoint.highBeta)/np.log(float(dataPoint.maxint))
+
                 #scaledval = log(dataPoint.highAlpha)/log(float(2**20)+1e-8)
                 data = {playername: scaledval} #, scaledLowAlpha }
+                
                 #data = {'brain': scaledBeta}
                 
                 out = {'brain':scaledval, 'timestamp': time.time()}

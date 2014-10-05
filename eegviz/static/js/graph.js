@@ -4,32 +4,10 @@ now = new Date(Date.now() - duration);
 
 graphs = {
     graph1: {
-    	groups: {
-    	    heart: {
-        		value: 0,
-        		color: 'blue',
-        		data: d3.range(limit).map(function() {
-        		    return 0
-        		})
-    	    }
-    	}
-    },
-    graph2: {
-        groups: {
-            hrv: {
-                value: 0,
-                color: 'red',
-                data: d3.range(limit).map(function() {
-                    return 0
-                })
-            }
-        }
-    },
-    graph3: {
         groups: {
             player1_val: {
                 value: 0,
-                color: 'green',
+                color: 'cyan',
                 data: d3.range(limit).map(function() {
                     return 0
                 })
@@ -43,6 +21,29 @@ graphs = {
             }
         }
     }
+    // graph2: {
+    // 	groups: {
+    // 	    heart: {
+    //     		value: 0,
+    //     		color: 'blue',
+    //     		data: d3.range(limit).map(function() {
+    //     		    return 0
+    //     		})
+    // 	    },
+    //         hrv: {
+    //             value: 0,
+    //             color: 'red',
+    //             data: d3.range(limit).map(function() {
+    //                 return 0
+    //             })
+    //         }
+    // 	}
+    // },
+    // graph3: {
+    //     groups: {
+            
+    //     }
+    // }
 }
 
 function initGraphs(){
@@ -77,6 +78,7 @@ function initGraphs(){
 	graph.axis = graph.svg.append('g')
             .attr('class', 'x axis')
             .attr('transform', 'translate(0,' + height + ')')
+            .style("stroke-width", 20)
             .call(graph.x.axis = d3.svg.axis().scale(graph.x).orient('bottom'))
 
 	graph.paths = graph.svg.append('g')

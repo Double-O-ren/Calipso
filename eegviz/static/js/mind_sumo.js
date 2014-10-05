@@ -1,4 +1,4 @@
-SCORE_SCALE = 2.0;
+SCORE_SCALE = 5.0;
 score = 0.0;
 
 WINDOW_SCALE = 5.0;
