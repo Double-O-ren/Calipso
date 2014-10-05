@@ -37,7 +37,7 @@ if __name__ == "__main__":
             playername = argin
         if '_val' not in playername:
             playername += '_val'
-    print "running " + playername
+    
         
     
     if sys.platform == 'win32':
@@ -54,9 +54,10 @@ if __name__ == "__main__":
         if playername is 'player1_val':
             target_address = '/dev/tty.MindWaveMobile-DevA'
         elif playername is 'player2_val':
-            target_address = '/dev/tty.MindWaveMobile-DevA'
+            target_address = '/dev/tty.MindWaveMobile-DevA-1'
         #target_address = "/dev/tty.MindWaveMobile-DevA"
 
+    print "running " + playername
     print "Connecting to MWM...",
     try:
         mindwaveDataPointReader = MindwaveDataPointReader(target_address)
