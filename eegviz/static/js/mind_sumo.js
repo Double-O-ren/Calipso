@@ -2,7 +2,7 @@ SCORE_SCALE = 5.0;
 score = 0.0;
 
 WINDOW_SCALE = 5.0;
-MAX_COUNT = 60;
+MAX_COUNT = 450;
 count=0;
 
 function initSumo(){
@@ -224,9 +224,9 @@ function updateState(){
     //console.log("p2 " + player2_val.toString())
     score += SCORE_SCALE * (player2_val - player1_val) / (2.0 * WINDOW_SCALE);
     if (count > MAX_COUNT) {
-        score*=1.1;
+        score*=1.02;
     }
-    
+
     //console.log(score);
     updateVisualScore();
     check_won();
