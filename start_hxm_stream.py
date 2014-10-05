@@ -34,7 +34,8 @@ def callback(value_name, value):
         rri_buffer.append(data)
         print "RR {0:1.4f} at {1}".format(value, curtime)
         if len(rri_buffer) > winlen:
-            hrv = biosigcorr.getSDNN(rri_buffer, winlen, offset=1)[0]
+            rri = [x['heart'] for x in rri_buffer]
+            hrv = biosigcorr.getSDNN(rri, winlen, offset=1)[0]
             print "HRV {0:.2f} from {1} RRIs".format(hrv, len(rri_buffer))
             data = {"heart": hrv, "time":curtime}
             jsn = json.dumps(data)
