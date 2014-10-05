@@ -2,6 +2,8 @@ SCORE_SCALE = 5.0;
 score = 0.0;
 
 WINDOW_SCALE = 5.0;
+MAX_COUNT = 60;
+count=0;
 
 function initSumo(){
 
@@ -213,6 +215,7 @@ function updateVisualScore(){
 
 // happens every 50ms
 function updateState(){
+    count++;
     player1_val = vals["player1_val"] || 0
     player2_val = vals["player2_val"] || 0
  //   player1_val = 2.0 * player1_val - 1.0;
@@ -220,6 +223,9 @@ function updateState(){
     //console.log("p1 " + player1_val.toString())
     //console.log("p2 " + player2_val.toString())
     score += SCORE_SCALE * (player2_val - player1_val) / (2.0 * WINDOW_SCALE);
+    if (count > MAX_COUNT) {
+        score*=1.1;
+    
     //console.log(score);
     updateVisualScore();
     check_won();
