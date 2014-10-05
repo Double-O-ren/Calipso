@@ -15,11 +15,12 @@ from scipy import signal
 from mindwavemobile.MindwaveDataPoints import *
 from mindwavemobile.MindwaveDataPointReader import MindwaveDataPointReader
 
-import datetime
+import time
 from collections import deque
-
+import requests
+import simplejson as json
     
-    
+HOST_NAME = '172.31.35.47'
 plotdata=False
 
 
@@ -73,7 +74,7 @@ if __name__ == "__main__":
             dataPoint = mindwaveDataPointReader.readNextDataPoint()
             
             if dataPoint.__class__ is PoorSignalLevelDataPoint:
-                count=0;
+                count=0
                 
                 if not dataPoint.headSetHasContactToSkin():
                     #chek the first one, and if no contact, loop until dies
@@ -89,23 +90,37 @@ if __name__ == "__main__":
                     else:
                         print "Contact dectected"
     
-            if (dataPoint.__class__ is RawDataPoint):
-                #print dataPoint
-                rawdatastream.append(dataPoint.rawValue)
-    			
-            if (dataPoint.__class__ is AttentionDataPoint):
-                attentiondata.append(dataPoint.attentionValue)
+#            elif (dataPoint.__class__ is RawDataPoint):
+#                #print dataPoint
+#                rawdatastream.append(dataPoint.rawValue)
+#    			
+#            elif (dataPoint.__class__ is AttentionDataPoint):
+#                attentiondata.append(dataPoint.attentionValue)
+#                
+#            elif (dataPoint.__class__ is MeditationDataPoint):
+#                meditationdata.append(dataPoint.meditationValue)
+#                
+            
+            elif (dataPoint.__class__ is EEGPowersDataPoint):
+                #scaledval = dataPoint.highAlpha/float(dataPoint.maxint)
+                #scaledval = log(dataPoint.highAlpha)/log(float(dataPoint.maxint))
+                scaledval = log(dataPoint.highAlpha)/log(float(2**20)+1e-8)
+                data = {'EEGPowers': scaledval }
                 
-            if (dataPoint.__class__ is MeditationDataPoint):
-                meditationdata.append(dataPoint.meditationValue)
+                out = {'EEGPowers':scaledval, 'timestamp': time.time()}
                 
-            if (dataPoint.__class__ is EEGPowersDataPoint):
-                #bwdata.append(dataPoint.asDict())
-                out['name'] = "EEGPowers"
-                out['timestamp'] = datetime.datetime.now()
-                out['value'] = [float(x)/dataPoint.maxint for x in dataPoint.asList()]
+               
+                #values = [float(x)/dataPoint.maxint for x in dataPoint.asList()]
+                #data['value'] = values
+                jsn = json.dumps(data)
+                st = 'http://%s:8000/update_data?update=%s' % (HOST_NAME, jsn)
+                requests.post(st)
                 bwdata.append(out)
-                print bwdata[-1]
+                if len(bwdata)==1:
+                    prevtime=0
+                else:
+                    prevtime=bwdata[-2]['timestamp']
+                print "alphaH {0:1.4f} at {1}".format(bwdata[-1]['EEGPowers'], bwdata[-1]['timestamp'])
         
     #        if len(rawdatastream) > Fs:
     #            plt.plot(rawdatastream)
@@ -121,8 +136,6 @@ if __name__ == "__main__":
                 plt.axis('tight')
                 plt.ylabel('EEG bandwidths')
                 plt.xlabel('sample')
-                
-
                 
         except KeyboardInterrupt:
             break;
