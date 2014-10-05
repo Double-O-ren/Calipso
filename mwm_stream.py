@@ -38,7 +38,8 @@ if __name__ == "__main__":
         if '_val' not in playername:
             playername += '_val'
     
-        
+    print "Player name "+playername
+
     target_address = ""
     if sys.platform == 'win32':
         #target_COM = 'COM4' #use this to identify correct address?
@@ -50,13 +51,15 @@ if __name__ == "__main__":
         elif playername == 'player2_val':
             target_address = 'COM5'
 
-
     elif sys.platform == 'darwin':
-        if playername is 'player1_val':
+        print "Running on OSX"
+        if playername == 'player1_val':
+            print "Player 1"
             target_address = '/dev/tty.MindWaveMobile-DevA'
-        elif playername is 'player2_val':
-            target_address = '/dev/tty.MindWaveMobile-DevA-1'
-        #target_address = "/dev/tty.MindWaveMobile-DevA"
+        elif playername == 'player2_val':
+            target_address = '/dev/tty.MindWaveMobile-DevA-2'
+            #target_address = "/dev/tty.MindWaveMobile-DevA"
+    
     if not target_address:
         raise IOError("No valid serial port address")
         #return

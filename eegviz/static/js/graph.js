@@ -4,37 +4,44 @@ now = new Date(Date.now() - duration);
 
 graphs = {
     graph1: {
-	groups: {
-	    heart: {
-		value: 0,
-		color: 'blue',
-		data: d3.range(limit).map(function() {
-		    return 0
-		})
-	    }
-	}
+    	groups: {
+    	    heart: {
+        		value: 0,
+        		color: 'blue',
+        		data: d3.range(limit).map(function() {
+        		    return 0
+        		})
+    	    }
+    	}
     },
     graph2: {
-    groups: {
-        hrv: {
-        value: 0,
-        color: 'red',
-        data: d3.range(limit).map(function() {
-            return 0
-        })
+        groups: {
+            hrv: {
+                value: 0,
+                color: 'red',
+                data: d3.range(limit).map(function() {
+                    return 0
+                })
+            }
         }
-    }
     },
     graph3: {
-    groups: {
-        brain: {
-        value: 0,
-        color: 'green',
-        data: d3.range(limit).map(function() {
-            return 0
-        })
+        groups: {
+            player1_val: {
+                value: 0,
+                color: 'green',
+                data: d3.range(limit).map(function() {
+                    return 0
+                })
+            },
+            player2_val: {
+                value: 0,
+                color: 'red',
+                data: d3.range(limit).map(function() {
+                    return 0
+                })
+            }
         }
-    }
     }
 }
 
