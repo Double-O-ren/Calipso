@@ -5,10 +5,19 @@ import time
 import zephyr
 from zephyr.testing import simulation_workflow
 
+# HRM data appears here.
 def callback(value_name, value):
-	#print value_name, value
-	if value_name == "heartbeat_interval":
-		print "RR {0:1.4f} at {1}".format(value, time.time())
+    """
+    value_name can be:
+        heartbeat_interval
+        heartrate
+        stride
+        activity (speed?)
+    """
+    #print value_name, value
+    if value_name == "heartbeat_interval":
+        # print RR interval and timestamp
+        print "RR {0:1.4f} at {1}".format(value, time.time())
 
 
 def main():
