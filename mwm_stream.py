@@ -10,8 +10,6 @@ import matplotlib.pyplot as plt
 
 import sys
 
-from scipy import signal
-from math import log
 
 from mindwavemobile.MindwaveDataPoints import *
 from mindwavemobile.MindwaveDataPointReader import MindwaveDataPointReader
@@ -112,7 +110,7 @@ if __name__ == "__main__":
                         print "No contact, quitting"
                         raise ValueError("no EEG contact")
                     else:
-                        print "Contact dectected"
+                        print "Contact detected"
     
 #            elif (dataPoint.__class__ is RawDataPoint):
 #                #print dataPoint
