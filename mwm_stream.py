@@ -70,7 +70,7 @@ if __name__ == "__main__":
     except IOError as e:
         print e
         print "Couldn't connect to MWM device. Check address? Is it turned on?";
-        sys.exit(-1)
+        raise e
         #return
         
     print " connected"
@@ -80,7 +80,7 @@ if __name__ == "__main__":
     attentiondata = deque()
     meditationdata = deque()
     bwdata = deque()
-    # elta (0.5 - 2.75Hz), theta (3.5 - 6.75Hz), low-alpha (7.5 - 9.25Hz), 
+    # Delta (0.5 - 2.75Hz), theta (3.5 - 6.75Hz), low-alpha (7.5 - 9.25Hz), 
     # high-alpha (10 - 11.75Hz), low-beta (13 - 16.75Hz), high-beta (18 - 29.75Hz), 
     # low-gamma (31 - 39.75Hz), and mid-gamma (41 - 49.75Hz)
     
@@ -107,7 +107,7 @@ if __name__ == "__main__":
                         dataPoint = mindwaveDataPointReader.readNextDataPoint()
                     if count>10000:
                         print "No contact, quitting"
-                        sys.exit(-2)
+                        raise ValueError("no EEG contact")
                     else:
                         print "Contact dectected"
     
@@ -132,7 +132,7 @@ if __name__ == "__main__":
                 
                 scaledval = np.log(dataPoint.highAlpha)/np.log(float(dataPoint.maxint))
                 #scaledval = log(dataPoint.highAlpha)/log(float(2**20)+1e-8)
-                data = {playername: scaledval}#, scaledLowAlpha }
+                data = {playername: scaledval} #, scaledLowAlpha }
                 #data = {'brain': scaledBeta}
                 
                 out = {'brain':scaledval, 'timestamp': time.time()}
