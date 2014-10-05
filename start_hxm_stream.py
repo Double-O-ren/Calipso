@@ -10,6 +10,8 @@ import simplejson as json
 HOST_NAME = '172.31.32.38'
 #HOST_NAME = '172.31.35.47'
 
+heartLog = open("heartLog.txt", "w")
+
 # HRM data appears here.
 def callback(value_name, value):
     """
@@ -22,12 +24,12 @@ def callback(value_name, value):
     #print value_name, value
     if value_name == "heartbeat_interval":
         # print RR interval and timestamp
-
         data = {"heart": value}
         jsn = json.dumps(data)
         st = 'http://%s:8000/update_data?update=%s' % (HOST_NAME, jsn)
         requests.post(st)
         print "RR {0:1.4f} at {1}".format(value, time.time())
+        heartLog.write("{0:1.4f} at {1}".format(value, time.time()))
 
 def main():
     zephyr.configure_root_logger()
