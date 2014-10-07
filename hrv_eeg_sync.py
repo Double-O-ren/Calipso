@@ -116,7 +116,17 @@ class RunMWM(threading.Thread):
         mindwaveDataPointReader.close()
         print "Closed MWM session."
         
-            
+def logEEG(filename, data):
+    """
+    create csv log file with time stamp and band energy
+    """
+    fid = file(filename,"a")
+    flatdata = [ [bandpower['time']], bandpower['brain']]
+    flatdata = [item for sublist in flatdata for item in sublist]
+    line = "{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}".format(flatdata)
+    fid.write(line)
+    
+    
 def main():
     """
     do things
@@ -145,7 +155,11 @@ def main():
     if not target_address:
         raise IOError("No valid serial port address")
 
-    
+    #clear the log file
+    eeglog_filename = "eeglog.txt"
+    fid = file(eeglog_filename,"w")
+    fid.write("")
+    fid.close()
     
     t1 = RunMWM()
     t1.connectMWM(target_address)
@@ -157,6 +171,7 @@ def main():
             if len(eegpower_buffer)>0:
                 bandpower = eegpower_buffer.popleft()
                 print "bands: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}".format(*bandpower['brain'])
+                logEEG(eeglog_filename,bandpower)
             if len(eegpower_buffer)>0:
                 hrv = hrv_buffer.popleft()
                 print "hrv: {0}".format(hrv)
